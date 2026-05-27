@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Form, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 import requests
+import os
+import uvicorn
 
 app = FastAPI()
 
@@ -69,7 +71,7 @@ async def text_query(prompt: str = Form(...)):
 
 
 # --------------------------
-# IMAGE API (WORKING)
+# IMAGE API
 # --------------------------
 @app.post("/image")
 async def image_query(file: UploadFile = File(...)):
@@ -96,3 +98,14 @@ async def video_query(file: UploadFile = File(...)):
     return {
         "response": f"Video uploaded successfully: {file.filename}"
     }
+
+
+# --------------------------
+# RAILWAY STARTUP
+# --------------------------
+if __name__ == "__main__":
+    uvicorn.run(
+        "main:app",
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 8000))
+    )

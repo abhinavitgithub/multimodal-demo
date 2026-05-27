@@ -1,12 +1,12 @@
 from fastapi import FastAPI, Form, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 import requests
-import os
-import uvicorn
 
 app = FastAPI()
 
-# Allow React frontend to connect
+# --------------------------
+# CORS
+# --------------------------
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -15,8 +15,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# NVIDIA API KEY
-NVIDIA_API_KEY = "PUT_YOUR_NVIDIA_API_KEY_HERE"
+# --------------------------
+# CONFIG
+# --------------------------
+NVIDIA_API_KEY = "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"
 
 MODEL = "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning"
 
@@ -26,7 +28,7 @@ MODEL = "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning"
 # --------------------------
 @app.get("/")
 def home():
-    return {"message": "Backend running"}
+    return {"message": "Backend running successfully"}
 
 
 # --------------------------
@@ -55,12 +57,11 @@ async def text_query(prompt: str = Form(...)):
         response = requests.post(
             "https://integrate.api.nvidia.com/v1/chat/completions",
             headers=headers,
-            json=payload
+            json=payload,
+            timeout=30
         )
 
         data = response.json()
-
-        print(data)
 
         if "choices" in data:
             answer = data["choices"][0]["message"]["content"]
@@ -101,14 +102,3 @@ async def video_query(file: UploadFile = File(...)):
     return {
         "response": f"Video uploaded successfully: {file.filename}"
     }
-
-
-# --------------------------
-# RAILWAY STARTUP
-# --------------------------
-if __name__ == "__main__":
-    uvicorn.run(
-        app,
-        host="0.0.0.0",
-        port=int(os.environ.get("PORT", 8000))
-    )

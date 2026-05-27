@@ -6,35 +6,50 @@ function App() {
   const [file, setFile] = useState(null);
   const [response, setResponse] = useState("");
 
+  // TEXT REQUEST
   const sendText = async () => {
-    const formData = new FormData();
-    formData.append("prompt", prompt);
+    try {
+      const formData = new FormData();
+      formData.append("prompt", prompt);
 
-    const res = await fetch("http://127.0.0.1:8000/text", {
-      method: "POST",
-      body: formData,
-    });
+      const res = await fetch("http://127.0.0.1:8000/text", {
+        method: "POST",
+        body: formData,
+      });
 
-    const data = await res.json();
-    setResponse(data.response);
+      const data = await res.json();
+      setResponse(data.response);
+    } catch (error) {
+      setResponse("Error in text request");
+      console.error(error);
+    }
   };
 
+  // IMAGE / AUDIO / VIDEO REQUEST
   const uploadFile = async () => {
-    if (!file) {
-      alert("Choose a file first");
-      return;
+    try {
+      if (!file) {
+        alert("Choose a file first");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch(`http://127.0.0.1:8000/${tab}`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      setResponse(data.response);
+
+      // reset file after upload
+    } catch (error) {
+      setResponse(`Error uploading ${tab}`);
+      console.error(error);
     }
-
-    const formData = new FormData();
-    formData.append("file", file);
-
-    const res = await fetch(`http://127.0.0.1:8000/${tab}`, {
-      method: "POST",
-      body: formData,
-    });
-
-    const data = await res.json();
-    setResponse(data.response);
   };
 
   return (

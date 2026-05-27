@@ -13,7 +13,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# NVIDIA settings
+# NVIDIA API KEY
 NVIDIA_API_KEY = "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"
 
 MODEL = "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning"
@@ -24,7 +24,9 @@ def home():
     return {"message": "Backend running"}
 
 
+# --------------------------
 # TEXT API
+# --------------------------
 @app.post("/text")
 async def text_query(prompt: str = Form(...)):
 
@@ -44,22 +46,31 @@ async def text_query(prompt: str = Form(...)):
         "max_tokens": 100
     }
 
-    response = requests.post(
-        "https://integrate.api.nvidia.com/v1/chat/completions",
-        headers=headers,
-        json=payload
-    )
-
-    data = response.json()
-
     try:
-        answer = data["choices"][0]["message"]["content"]
-    except:
-        answer = "Error getting response"
+        response = requests.post(
+            "https://integrate.api.nvidia.com/v1/chat/completions",
+            headers=headers,
+            json=payload
+        )
+
+        data = response.json()
+
+        print(data)
+
+        if "choices" in data:
+            answer = data["choices"][0]["message"]["content"]
+        else:
+            answer = f"API Error: {data}"
+
+    except Exception as e:
+        answer = f"Error: {str(e)}"
 
     return {"response": answer}
 
 
+# --------------------------
+# IMAGE API (WORKING)
+# --------------------------
 @app.post("/image")
 async def image_query(file: UploadFile = File(...)):
     return {
@@ -67,6 +78,9 @@ async def image_query(file: UploadFile = File(...)):
     }
 
 
+# --------------------------
+# AUDIO API
+# --------------------------
 @app.post("/audio")
 async def audio_query(file: UploadFile = File(...)):
     return {
@@ -74,6 +88,9 @@ async def audio_query(file: UploadFile = File(...)):
     }
 
 
+# --------------------------
+# VIDEO API
+# --------------------------
 @app.post("/video")
 async def video_query(file: UploadFile = File(...)):
     return {

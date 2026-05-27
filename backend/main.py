@@ -16,11 +16,14 @@ app.add_middleware(
 )
 
 # NVIDIA API KEY
-NVIDIA_API_KEY = "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"
+NVIDIA_API_KEY = "PUT_YOUR_NVIDIA_API_KEY_HERE"
 
 MODEL = "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning"
 
 
+# --------------------------
+# HOME API
+# --------------------------
 @app.get("/")
 def home():
     return {"message": "Backend running"}
@@ -105,7 +108,7 @@ async def video_query(file: UploadFile = File(...)):
 # --------------------------
 if __name__ == "__main__":
     uvicorn.run(
-        "main:app",
+        app,
         host="0.0.0.0",
         port=int(os.environ.get("PORT", 8000))
     )

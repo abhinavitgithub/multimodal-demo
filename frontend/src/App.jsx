@@ -190,168 +190,176 @@ function TextPanel({ accent }) {
     setError('')
     setResponse('')
     try {
-      const fd = new FormData()
-      fd.append('prompt', prompt.trim())
-      const res = await fetch(`${API_BASE}/text`, { method: 'POST', body: fd })
-      if (!res.ok) throw new Error(`Server error ${res.status}`)
-      const data = await res.json()
-      setResponse(data.response)
-    } catch (err) {
-      setError(err.message || 'Something went wrong.')
-    } finally {
-      setLoading(false)
+      const controller = new AbortController();
+
+      const timeoutId = setTimeout(() => {
+        controller.abort();
+      }, 20000);
+
+      const response = await fetch(`${API_BASE}/text`, {
+        method: "POST",
+        body: formData,
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+
+      const data = await response.json();
+
+      setResponse(data.response);
+    } catch (error) {
+      setResponse("Network slow or request failed. Please retry.");
     }
+
+    return (
+      <div className="panel">
+        <form onSubmit={handleSubmit} className="panel__form">
+          <label className="field-label">Your prompt</label>
+          <textarea
+            className="textarea"
+            style={{ '--tab-accent': accent }}
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            placeholder="Ask anything… describe a scene, request an analysis, start a conversation."
+            rows={5}
+            disabled={loading}
+          />
+          <button
+            type="submit"
+            className="btn-primary"
+            style={{ '--tab-accent': accent }}
+            disabled={loading || !prompt.trim()}
+          >
+            {loading ? <Spinner /> : (
+              <>
+                Send
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13" />
+                  <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                </svg>
+              </>
+            )}
+          </button>
+        </form>
+        {error && <p className="error-msg">{error}</p>}
+        <ResponseBox response={response} loading={false} accent={accent} />
+      </div>
+    )
   }
 
-  return (
-    <div className="panel">
-      <form onSubmit={handleSubmit} className="panel__form">
-        <label className="field-label">Your prompt</label>
-        <textarea
-          className="textarea"
-          style={{ '--tab-accent': accent }}
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          placeholder="Ask anything… describe a scene, request an analysis, start a conversation."
-          rows={5}
-          disabled={loading}
-        />
-        <button
-          type="submit"
-          className="btn-primary"
-          style={{ '--tab-accent': accent }}
-          disabled={loading || !prompt.trim()}
-        >
-          {loading ? <Spinner /> : (
-            <>
-              Send
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="22" y1="2" x2="11" y2="13" />
-                <polygon points="22 2 15 22 11 13 2 9 22 2" />
-              </svg>
-            </>
-          )}
-        </button>
-      </form>
-      {error && <p className="error-msg">{error}</p>}
-      <ResponseBox response={response} loading={false} accent={accent} />
-    </div>
-  )
-}
+  function FilePanel({ tabId, accent }) {
+    const [file, setFile] = useState(null)
+    const [response, setResponse] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState('')
 
-function FilePanel({ tabId, accent }) {
-  const [file, setFile] = useState(null)
-  const [response, setResponse] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    if (!file) return
-    setLoading(true)
-    setError('')
-    setResponse('')
-    try {
-      const fd = new FormData()
-      fd.append('file', file)
-      const res = await fetch(`${API_BASE}/${tabId}`, { method: 'POST', body: fd })
-      if (!res.ok) throw new Error(`Server error ${res.status}`)
-      const data = await res.json()
-      setResponse(data.response)
-    } catch (err) {
-      setError(err.message || 'Something went wrong.')
-    } finally {
-      setLoading(false)
+    const handleSubmit = async (e) => {
+      e.preventDefault()
+      if (!file) return
+      setLoading(true)
+      setError('')
+      setResponse('')
+      try {
+        const fd = new FormData()
+        fd.append('file', file)
+        const res = await fetch(`${API_BASE}/${tabId}`, { method: 'POST', body: fd })
+        if (!res.ok) throw new Error(`Server error ${res.status}`)
+        const data = await res.json()
+        setResponse(data.response)
+      } catch (err) {
+        setError(err.message || 'Something went wrong.')
+      } finally {
+        setLoading(false)
+      }
     }
+
+    const actionLabel = tabId === 'image' ? 'Analyse Image' : tabId === 'audio' ? 'Transcribe Audio' : 'Analyse Video'
+
+    return (
+      <div className="panel">
+        <form onSubmit={handleSubmit} className="panel__form">
+          <DropZone tabId={tabId} file={file} onFile={setFile} accent={accent} />
+          <button
+            type="submit"
+            className="btn-primary"
+            style={{ '--tab-accent': accent }}
+            disabled={loading || !file}
+          >
+            {loading ? <Spinner /> : (
+              <>
+                {actionLabel}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+              </>
+            )}
+          </button>
+        </form>
+        {error && <p className="error-msg">{error}</p>}
+        <ResponseBox response={response} loading={loading} accent={accent} />
+      </div>
+    )
   }
 
-  const actionLabel = tabId === 'image' ? 'Analyse Image' : tabId === 'audio' ? 'Transcribe Audio' : 'Analyse Video'
+  export default function App() {
+    const [activeTab, setActiveTab] = useState('text')
+    const tab = TABS.find(t => t.id === activeTab)
 
-  return (
-    <div className="panel">
-      <form onSubmit={handleSubmit} className="panel__form">
-        <DropZone tabId={tabId} file={file} onFile={setFile} accent={accent} />
-        <button
-          type="submit"
-          className="btn-primary"
-          style={{ '--tab-accent': accent }}
-          disabled={loading || !file}
-        >
-          {loading ? <Spinner /> : (
-            <>
-              {actionLabel}
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-              </svg>
-            </>
-          )}
-        </button>
-      </form>
-      {error && <p className="error-msg">{error}</p>}
-      <ResponseBox response={response} loading={loading} accent={accent} />
-    </div>
-  )
-}
+    return (
+      <div className="app">
+        <div className="bg-grid" aria-hidden="true" />
 
-export default function App() {
-  const [activeTab, setActiveTab] = useState('text')
-  const tab = TABS.find(t => t.id === activeTab)
-
-  return (
-    <div className="app">
-      <div className="bg-grid" aria-hidden="true" />
-
-      <header className="header">
-        <div className="header__badge">
-          <span className="header__dot" style={{ background: tab.accent }} />
-          Multimodal AI
-        </div>
-        <h1 className="header__title">TIAV Studio</h1>
-        <p className="header__sub">
-          Interact with AI through <em>text</em>, <em>images</em>, <em>audio</em> and <em>video</em>
-        </p>
-      </header>
-
-      <main className="main">
-        <div className="card">
-          <nav className="tabs" role="tablist" aria-label="Modality">
-            {TABS.map((t) => (
-              <button
-                key={t.id}
-                role="tab"
-                aria-selected={activeTab === t.id}
-                className={`tab${activeTab === t.id ? ' tab--active' : ''}`}
-                style={{ '--tab-accent': t.accent }}
-                onClick={() => setActiveTab(t.id)}
-              >
-                <span className="tab__icon">{t.icon}</span>
-                <span className="tab__label">{t.label}</span>
-              </button>
-            ))}
-            <div
-              className="tab-indicator"
-              style={{
-                '--indicator-left': `${TABS.findIndex(t => t.id === activeTab) * 25}%`,
-                '--indicator-color': tab.accent,
-              }}
-            />
-          </nav>
-
-          <div className="card__body">
-            {activeTab === 'text' && <TextPanel accent={tab.accent} />}
-            {activeTab === 'image' && <FilePanel key="image" tabId="image" accent={tab.accent} />}
-            {activeTab === 'audio' && <FilePanel key="audio" tabId="audio" accent={tab.accent} />}
-            {activeTab === 'video' && <FilePanel key="video" tabId="video" accent={tab.accent} />}
+        <header className="header">
+          <div className="header__badge">
+            <span className="header__dot" style={{ background: tab.accent }} />
+            Multimodal AI
           </div>
-        </div>
-      </main>
+          <h1 className="header__title">TIAV Studio</h1>
+          <p className="header__sub">
+            Interact with AI through <em>text</em>, <em>images</em>, <em>audio</em> and <em>video</em>
+          </p>
+        </header>
 
-      <footer className="footer">
-        <span>TIAV Multimodal Demo</span>
-        <span className="footer__sep">·</span>
-        <span>FastAPI + React</span>
-      </footer>
-    </div>
-  )
-}
+        <main className="main">
+          <div className="card">
+            <nav className="tabs" role="tablist" aria-label="Modality">
+              {TABS.map((t) => (
+                <button
+                  key={t.id}
+                  role="tab"
+                  aria-selected={activeTab === t.id}
+                  className={`tab${activeTab === t.id ? ' tab--active' : ''}`}
+                  style={{ '--tab-accent': t.accent }}
+                  onClick={() => setActiveTab(t.id)}
+                >
+                  <span className="tab__icon">{t.icon}</span>
+                  <span className="tab__label">{t.label}</span>
+                </button>
+              ))}
+              <div
+                className="tab-indicator"
+                style={{
+                  '--indicator-left': `${TABS.findIndex(t => t.id === activeTab) * 25}%`,
+                  '--indicator-color': tab.accent,
+                }}
+              />
+            </nav>
+
+            <div className="card__body">
+              {activeTab === 'text' && <TextPanel accent={tab.accent} />}
+              {activeTab === 'image' && <FilePanel key="image" tabId="image" accent={tab.accent} />}
+              {activeTab === 'audio' && <FilePanel key="audio" tabId="audio" accent={tab.accent} />}
+              {activeTab === 'video' && <FilePanel key="video" tabId="video" accent={tab.accent} />}
+            </div>
+          </div>
+        </main>
+
+        <footer className="footer">
+          <span>TIAV Multimodal Demo</span>
+          <span className="footer__sep">·</span>
+          <span>FastAPI + React</span>
+        </footer>
+      </div>
+    )
+  }

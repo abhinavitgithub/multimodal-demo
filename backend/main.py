@@ -50,7 +50,8 @@ async def text_query(prompt: str = Form(...)):
                 "content": prompt
             }
         ],
-        "max_tokens": 100
+        "max_tokens": 60,
+        "temperature": 0.5
     }
 
     try:
@@ -58,18 +59,26 @@ async def text_query(prompt: str = Form(...)):
             "https://integrate.api.nvidia.com/v1/chat/completions",
             headers=headers,
             json=payload,
-            timeout=30
+            timeout=20
         )
+
+        if response.status_code != 200:
+            return {
+                "response": "Server busy. Please retry."
+            }
 
         data = response.json()
 
         if "choices" in data:
             answer = data["choices"][0]["message"]["content"]
         else:
-            answer = f"API Error: {data}"
+            answer = "No response received."
 
-    except Exception as e:
-        answer = f"Error: {str(e)}"
+    except requests.exceptions.Timeout:
+        answer = "Request timeout. Please try again."
+
+    except Exception:
+        answer = "Temporary connection issue. Retry."
 
     return {"response": answer}
 

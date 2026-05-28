@@ -2,7 +2,7 @@ import { useState, useRef, useCallback } from 'react'
 import './App.css'
 
 const API_BASE = 'http://127.0.0.1:8000'
-const REQUEST_TIMEOUT_MS = 20000
+const REQUEST_TIMEOUT_MS = 60000
 
 // ─────────────────────────────────────────────
 // Tab config

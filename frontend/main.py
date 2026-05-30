@@ -44,20 +44,37 @@ async def text_query(prompt: str = Form(...)):
         "max_tokens": 100
     }
 
+    payload["stream"] = True
+
+def generate():
+
     response = requests.post(
         "https://integrate.api.nvidia.com/v1/chat/completions",
         headers=headers,
-        json=payload
+        json=payload,
+        stream=True
     )
 
-    data = response.json()
+    for line in response.iter_lines():
 
-    try:
-        answer = data["choices"][0]["message"]["content"]
-    except:
-        answer = "Error getting response"
+        if line:
 
-    return {"response": answer}
+            decoded = line.decode("utf-8")
+
+            if decoded.startswith("data: "):
+
+                chunk = decoded.replace("data: ", "")
+
+                if chunk == "[DONE]":
+                    break
+
+                yield chunk + "\n"
+
+
+return StreamingResponse(
+    generate(),
+    media_type="text/plain"
+)
 
 
 # IMAGE API

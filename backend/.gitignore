@@ -1,0 +1,60 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+openwebui-env/
+backend/venv/
+
+# Node
+node_modules/
+frontend/node_modules/
+
+# React build
+dist/
+frontend/dist/
+
+# Android / Gradle
+.gradle/
+frontend-android/.gradle/
+frontend-android/build/
+frontend-android/app/build/
+
+# OS / IDE
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Secrets
+.env
+.env.*
+
+# Python envs
+venv/
+backend/venv/
+openwebui-env/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+frontend/node_modules/
+
+# Build
+dist/
+frontend/dist/
+
+# Android
+.gradle/
+frontend-android/.gradle/
+frontend-android/build/
+
+# Env files
+.env
+*.env

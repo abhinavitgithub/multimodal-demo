@@ -1,0 +1,86 @@
+# ─────────────────────────────────────────────────────────────
+# 🐍 Python Configuration
+# ─────────────────────────────────────────────────────────────
+# Virtual Environments
+venv/
+.venv/
+env/
+openwebui-env/
+backend/venv/
+backend/env/
+
+# Python Cache & Compiled Files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+
+# ─────────────────────────────────────────────────────────────
+# 📦 Node / JavaScript Configuration
+# ─────────────────────────────────────────────────────────────
+# Dependency Directories
+node_modules/
+frontend/node_modules/
+
+# Production/Build Artifacts
+dist/
+frontend/dist/
+build/
+.svelte-kit/
+.next/
+out/
+
+# Log Files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ─────────────────────────────────────────────────────────────
+# 🤖 Android / Gradle Configuration
+# ─────────────────────────────────────────────────────────────
+# Gradle files and directories
+.gradle/
+frontend-android/.gradle/
+frontend-android/build/
+frontend-android/app/build/
+frontend-android/local.properties
+frontend-android/.navigation/
+frontend-android/captures/
+.externalNativeBuild/
+.cxx/
+
+# Gradle Signing keys / Keystore
+*.keystore
+*.jks
+*.pepk
+
+# ─────────────────────────────────────────────────────────────
+# 💻 Operating System & IDE Configuration
+# ─────────────────────────────────────────────────────────────
+# OS Specific Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE / Editor Files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# ─────────────────────────────────────────────────────────────
+# 🔑 Environment & Secrets Configuration
+# ─────────────────────────────────────────────────────────────
+# Secrets
+.env
+.env.*
+*.env
+.webui_secret_key

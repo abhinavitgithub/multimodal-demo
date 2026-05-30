@@ -1,0 +1,972 @@
+{
+  "config": {
+    "models": [
+      "nvidia/nemotron-mini-4b-instruct",
+      "nvidia/llama-3.3-nemotron-super-49b-v1",
+      "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+      "qwen/qwen3-next-80b-a3b-instruct",
+      "qwen/qwen3.5-122b-a10b"
+    ],
+    "scenarios": {
+      "SILO": {
+        "max_tokens": 900
+      },
+      "LISO": {
+        "max_tokens": 120
+      },
+      "BALANCED": {
+        "max_tokens": 280
+      }
+    },
+    "n_samples_target": 3,
+    "max_attempts_per_run": 6,
+    "temperature": 0.2,
+    "token_counter": "tiktoken/cl100k_base",
+    "anomaly_thresholds": {
+      "min_output_tokens": 5,
+      "min_tps": 0.5,
+      "instability_cv": 0.4
+    }
+  },
+  "summaries": [
+    {
+      "model": "nvidia/nemotron-mini-4b-instruct",
+      "scenario": "SILO",
+      "n": 3,
+      "ttft_mean": 0.73,
+      "ttft_std": 0.236,
+      "ttft_p50": 0.605,
+      "ttft_p95": 0.962,
+      "tps_mean": 101.6,
+      "tps_std": 1.1,
+      "tps_p50": 102.0,
+      "e2e_mean": 7.22,
+      "tokens_mean": 659,
+      "failures": 0,
+      "anomalies": 0,
+      "warnings": []
+    },
+    {
+      "model": "nvidia/nemotron-mini-4b-instruct",
+      "scenario": "LISO",
+      "n": 3,
+      "ttft_mean": 0.764,
+      "ttft_std": 0.153,
+      "ttft_p50": 0.677,
+      "ttft_p95": 0.914,
+      "tps_mean": 56.4,
+      "tps_std": 45.6,
+      "tps_p50": 58.5,
+      "e2e_mean": 5.93,
+      "tokens_mean": 120,
+      "failures": 0,
+      "anomalies": 0,
+      "warnings": [
+        "HIGH_TPS_VARIANCE: CV=81% (min=9.8 max=100.8)"
+      ]
+    },
+    {
+      "model": "nvidia/nemotron-mini-4b-instruct",
+      "scenario": "BALANCED",
+      "n": 3,
+      "ttft_mean": 0.684,
+      "ttft_std": 0.079,
+      "ttft_p50": 0.661,
+      "ttft_p95": 0.761,
+      "tps_mean": 76.8,
+      "tps_std": 44.8,
+      "tps_p50": 102.2,
+      "e2e_mean": 6.1,
+      "tokens_mean": 277,
+      "failures": 0,
+      "anomalies": 0,
+      "warnings": [
+        "HIGH_TPS_VARIANCE: CV=58% (min=25.1 max=103.2)"
+      ]
+    },
+    {
+      "model": "nvidia/llama-3.3-nemotron-super-49b-v1",
+      "scenario": "SILO",
+      "n": 3,
+      "ttft_mean": 0.957,
+      "ttft_std": 0.18,
+      "ttft_p50": 0.886,
+      "ttft_p95": 1.134,
+      "tps_mean": 16.3,
+      "tps_std": 3.0,
+      "tps_p50": 14.8,
+      "e2e_mean": 56.1,
+      "tokens_mean": 884.3,
+      "failures": 0,
+      "anomalies": 0,
+      "warnings": []
+    },
+    {
+      "model": "nvidia/llama-3.3-nemotron-super-49b-v1",
+      "scenario": "LISO",
+      "n": 3,
+      "ttft_mean": 3.939,
+      "ttft_std": 4.881,
+      "ttft_p50": 1.206,
+      "ttft_p95": 8.738,
+      "tps_mean": 24.4,
+      "tps_std": 0.9,
+      "tps_p50": 24.7,
+      "e2e_mean": 8.86,
+      "tokens_mean": 120,
+      "failures": 0,
+      "anomalies": 0,
+      "warnings": [
+        "HIGH_TTFT_VARIANCE: CV=124% (min=1.037s max=9.575s)"
+      ]
+    },
+    {
+      "model": "nvidia/llama-3.3-nemotron-super-49b-v1",
+      "scenario": "BALANCED",
+      "n": 3,
+      "ttft_mean": 8.893,
+      "ttft_std": 13.592,
+      "ttft_p50": 1.359,
+      "ttft_p95": 22.26,
+      "tps_mean": 21.5,
+      "tps_std": 4.9,
+      "tps_p50": 20.6,
+      "e2e_mean": 22.34,
+      "tokens_mean": 280,
+      "failures": 0,
+      "anomalies": 0,
+      "warnings": [
+        "HIGH_TTFT_VARIANCE: CV=153% (min=0.737s max=24.583s)"
+      ]
+    },
+    {
+      "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+      "scenario": "SILO",
+      "n": 3,
+      "ttft_mean": 1.285,
+      "ttft_std": 0.272,
+      "ttft_p50": 1.28,
+      "ttft_p95": 1.532,
+      "tps_mean": 317.5,
+      "tps_std": 72.3,
+      "tps_p50": 287.6,
+      "e2e_mean": 4.21,
+      "tokens_mean": 900,
+      "failures": 0,
+      "anomalies": 1,
+      "warnings": [
+        "ANOMALIES_DISCARDED: 1 run(s) \u2014 zero_tps: tps=0.0, tokens=900"
+      ]
+    },
+    {
+      "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+      "scenario": "LISO",
+      "n": 2,
+      "ttft_mean": 1.024,
+      "ttft_std": 0.032,
+      "ttft_p50": 1.024,
+      "ttft_p95": 1.045,
+      "tps_mean": 872.2,
+      "tps_std": 78.2,
+      "tps_p50": 872.2,
+      "e2e_mean": 1.16,
+      "tokens_mean": 120,
+      "failures": 0,
+      "anomalies": 4,
+      "warnings": [
+        "ANOMALIES_DISCARDED: 4 run(s) \u2014 zero_tps: tps=0.0, tokens=120"
+      ]
+    },
+    {
+      "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+      "scenario": "BALANCED",
+      "n": 3,
+      "ttft_mean": 0.993,
+      "ttft_std": 0.086,
+      "ttft_p50": 0.963,
+      "ttft_p95": 1.077,
+      "tps_mean": 335.8,
+      "tps_std": 69.8,
+      "tps_p50": 295.9,
+      "e2e_mean": 1.85,
+      "tokens_mean": 280,
+      "failures": 0,
+      "anomalies": 1,
+      "warnings": [
+        "ANOMALIES_DISCARDED: 1 run(s) \u2014 zero_tps: tps=0.0, tokens=280"
+      ]
+    },
+    {
+      "model": "qwen/qwen3-next-80b-a3b-instruct",
+      "scenario": "SILO",
+      "n": 3,
+      "ttft_mean": 3.845,
+      "ttft_std": 4.951,
+      "ttft_p50": 1.226,
+      "ttft_p95": 8.723,
+      "tps_mean": 30.6,
+      "tps_std": 1.6,
+      "tps_p50": 30.2,
+      "e2e_mean": 31.63,
+      "tokens_mean": 850.3,
+      "failures": 0,
+      "anomalies": 0,
+      "warnings": [
+        "HIGH_TTFT_VARIANCE: CV=129% (min=0.754s max=9.556s)"
+      ]
+    },
+    {
+      "model": "qwen/qwen3-next-80b-a3b-instruct",
+      "scenario": "LISO",
+      "n": 3,
+      "ttft_mean": 3.38,
+      "ttft_std": 1.168,
+      "ttft_p50": 2.759,
+      "ttft_p95": 4.531,
+      "tps_mean": 40.1,
+      "tps_std": 11.8,
+      "tps_p50": 36.5,
+      "e2e_mean": 6.54,
+      "tokens_mean": 120,
+      "failures": 0,
+      "anomalies": 0,
+      "warnings": []
+    },
+    {
+      "model": "qwen/qwen3-next-80b-a3b-instruct",
+      "scenario": "BALANCED",
+      "n": 3,
+      "ttft_mean": 6.062,
+      "ttft_std": 4.322,
+      "ttft_p50": 8.052,
+      "ttft_p95": 8.934,
+      "tps_mean": 31.0,
+      "tps_std": 10.7,
+      "tps_p50": 37.1,
+      "e2e_mean": 15.27,
+      "tokens_mean": 257.7,
+      "failures": 0,
+      "anomalies": 0,
+      "warnings": [
+        "HIGH_TTFT_VARIANCE: CV=71% (min=1.103s max=9.032s)"
+      ]
+    },
+    {
+      "model": "qwen/qwen3.5-122b-a10b",
+      "scenario": "SILO",
+      "n": 3,
+      "ttft_mean": 13.541,
+      "ttft_std": 9.215,
+      "ttft_p50": 13.892,
+      "ttft_p95": 21.707,
+      "tps_mean": 16.8,
+      "tps_std": 10.4,
+      "tps_p50": 14.4,
+      "e2e_mean": 81.16,
+      "tokens_mean": 878,
+      "failures": 0,
+      "anomalies": 1,
+      "warnings": [
+        "HIGH_TTFT_VARIANCE: CV=68% (min=4.155s max=22.575s)",
+        "HIGH_TPS_VARIANCE: CV=62% (min=7.7 max=28.2)",
+        "ANOMALIES_DISCARDED: 1 run(s) \u2014 empty_output: tokens=0"
+      ]
+    },
+    {
+      "model": "qwen/qwen3.5-122b-a10b",
+      "scenario": "LISO",
+      "n": 3,
+      "ttft_mean": 7.649,
+      "ttft_std": 5.956,
+      "ttft_p50": 10.767,
+      "ttft_p95": 11.335,
+      "tps_mean": 31.6,
+      "tps_std": 53.0,
+      "tps_p50": 1.1,
+      "e2e_mean": 94.24,
+      "tokens_mean": 120,
+      "failures": 0,
+      "anomalies": 0,
+      "warnings": [
+        "HIGH_TTFT_VARIANCE: CV=78% (min=0.782s max=11.399s)",
+        "HIGH_TPS_VARIANCE: CV=168% (min=0.8 max=92.7)"
+      ]
+    },
+    {
+      "model": "qwen/qwen3.5-122b-a10b",
+      "scenario": "BALANCED",
+      "n": 3,
+      "ttft_mean": 13.659,
+      "ttft_std": 1.236,
+      "ttft_p50": 14.038,
+      "ttft_p95": 14.6,
+      "tps_mean": 26.9,
+      "tps_std": 26.8,
+      "tps_p50": 21.6,
+      "e2e_mean": 47.23,
+      "tokens_mean": 264.7,
+      "failures": 0,
+      "anomalies": 1,
+      "warnings": [
+        "HIGH_TPS_VARIANCE: CV=100% (min=3.2 max=56.0)",
+        "ANOMALIES_DISCARDED: 1 run(s) \u2014 empty_output: tokens=0"
+      ]
+    }
+  ],
+  "runs": {
+    "nvidia/nemotron-mini-4b-instruct::SILO": [
+      {
+        "model": "nvidia/nemotron-mini-4b-instruct",
+        "scenario": "SILO",
+        "ttfb": 0.9917,
+        "ttft": 1.0022,
+        "e2e": 7.4612,
+        "tps": 102.03,
+        "output_tokens": 659,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "nvidia/nemotron-mini-4b-instruct",
+        "scenario": "SILO",
+        "ttfb": 0.5678,
+        "ttft": 0.5828,
+        "e2e": 7.0193,
+        "tps": 102.39,
+        "output_tokens": 659,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "nvidia/nemotron-mini-4b-instruct",
+        "scenario": "SILO",
+        "ttfb": 0.5942,
+        "ttft": 0.6047,
+        "e2e": 7.1726,
+        "tps": 100.34,
+        "output_tokens": 659,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      }
+    ],
+    "nvidia/nemotron-mini-4b-instruct::LISO": [
+      {
+        "model": "nvidia/nemotron-mini-4b-instruct",
+        "scenario": "LISO",
+        "ttfb": 0.6321,
+        "ttft": 0.6766,
+        "e2e": 2.7297,
+        "tps": 58.45,
+        "output_tokens": 120,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "nvidia/nemotron-mini-4b-instruct",
+        "scenario": "LISO",
+        "ttfb": 0.8492,
+        "ttft": 0.9408,
+        "e2e": 13.1977,
+        "tps": 9.79,
+        "output_tokens": 120,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "nvidia/nemotron-mini-4b-instruct",
+        "scenario": "LISO",
+        "ttfb": 0.6301,
+        "ttft": 0.6735,
+        "e2e": 1.8634,
+        "tps": 100.85,
+        "output_tokens": 120,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      }
+    ],
+    "nvidia/nemotron-mini-4b-instruct::BALANCED": [
+      {
+        "model": "nvidia/nemotron-mini-4b-instruct",
+        "scenario": "BALANCED",
+        "ttfb": 0.7227,
+        "ttft": 0.7724,
+        "e2e": 11.5621,
+        "tps": 25.12,
+        "output_tokens": 271,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "nvidia/nemotron-mini-4b-instruct",
+        "scenario": "BALANCED",
+        "ttfb": 0.6489,
+        "ttft": 0.6606,
+        "e2e": 3.3743,
+        "tps": 103.18,
+        "output_tokens": 280,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "nvidia/nemotron-mini-4b-instruct",
+        "scenario": "BALANCED",
+        "ttfb": 0.6077,
+        "ttft": 0.6187,
+        "e2e": 3.3581,
+        "tps": 102.22,
+        "output_tokens": 280,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      }
+    ],
+    "nvidia/llama-3.3-nemotron-super-49b-v1::SILO": [
+      {
+        "model": "nvidia/llama-3.3-nemotron-super-49b-v1",
+        "scenario": "SILO",
+        "ttfb": 0.6502,
+        "ttft": 1.1615,
+        "e2e": 61.8894,
+        "tps": 14.82,
+        "output_tokens": 900,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "nvidia/llama-3.3-nemotron-super-49b-v1",
+        "scenario": "SILO",
+        "ttfb": 0.7328,
+        "ttft": 0.8235,
+        "e2e": 46.2035,
+        "tps": 19.83,
+        "output_tokens": 900,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "nvidia/llama-3.3-nemotron-super-49b-v1",
+        "scenario": "SILO",
+        "ttfb": 0.7935,
+        "ttft": 0.8864,
+        "e2e": 60.2107,
+        "tps": 14.38,
+        "output_tokens": 853,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      }
+    ],
+    "nvidia/llama-3.3-nemotron-super-49b-v1::LISO": [
+      {
+        "model": "nvidia/llama-3.3-nemotron-super-49b-v1",
+        "scenario": "LISO",
+        "ttfb": 0.808,
+        "ttft": 1.2061,
+        "e2e": 6.0708,
+        "tps": 24.67,
+        "output_tokens": 120,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "nvidia/llama-3.3-nemotron-super-49b-v1",
+        "scenario": "LISO",
+        "ttfb": 0.6802,
+        "ttft": 9.5747,
+        "e2e": 14.6959,
+        "tps": 23.43,
+        "output_tokens": 120,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "nvidia/llama-3.3-nemotron-super-49b-v1",
+        "scenario": "LISO",
+        "ttfb": 0.6017,
+        "ttft": 1.0373,
+        "e2e": 5.8095,
+        "tps": 25.15,
+        "output_tokens": 120,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      }
+    ],
+    "nvidia/llama-3.3-nemotron-super-49b-v1::BALANCED": [
+      {
+        "model": "nvidia/llama-3.3-nemotron-super-49b-v1",
+        "scenario": "BALANCED",
+        "ttfb": 0.5865,
+        "ttft": 1.3586,
+        "e2e": 17.6582,
+        "tps": 17.18,
+        "output_tokens": 280,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "nvidia/llama-3.3-nemotron-super-49b-v1",
+        "scenario": "BALANCED",
+        "ttfb": 0.7161,
+        "ttft": 24.5829,
+        "e2e": 38.183,
+        "tps": 20.59,
+        "output_tokens": 280,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "nvidia/llama-3.3-nemotron-super-49b-v1",
+        "scenario": "BALANCED",
+        "ttfb": 0.6553,
+        "ttft": 0.737,
+        "e2e": 11.179,
+        "tps": 26.81,
+        "output_tokens": 280,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      }
+    ],
+    "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning::SILO": [
+      {
+        "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+        "scenario": "SILO",
+        "ttfb": 0.631,
+        "ttft": 3.9687,
+        "e2e": 3.9687,
+        "tps": 0.0,
+        "output_tokens": 900,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": "zero_tps: tps=0.0, tokens=900"
+      },
+      {
+        "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+        "scenario": "SILO",
+        "ttfb": 0.733,
+        "ttft": 1.2795,
+        "e2e": 4.4092,
+        "tps": 287.57,
+        "output_tokens": 900,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+        "scenario": "SILO",
+        "ttfb": 0.6561,
+        "ttft": 1.0148,
+        "e2e": 3.2655,
+        "tps": 399.89,
+        "output_tokens": 900,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+        "scenario": "SILO",
+        "ttfb": 0.6073,
+        "ttft": 1.5595,
+        "e2e": 4.9557,
+        "tps": 265.0,
+        "output_tokens": 900,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      }
+    ],
+    "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning::LISO": [
+      {
+        "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+        "scenario": "LISO",
+        "ttfb": 0.6334,
+        "ttft": 1.0017,
+        "e2e": 1.1486,
+        "tps": 816.91,
+        "output_tokens": 120,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+        "scenario": "LISO",
+        "ttfb": 0.5735,
+        "ttft": 1.0468,
+        "e2e": 1.1762,
+        "tps": 927.5,
+        "output_tokens": 120,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+        "scenario": "LISO",
+        "ttfb": 0.6963,
+        "ttft": 1.1543,
+        "e2e": 1.1543,
+        "tps": 0.0,
+        "output_tokens": 120,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": "zero_tps: tps=0.0, tokens=120"
+      },
+      {
+        "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+        "scenario": "LISO",
+        "ttfb": 0.5416,
+        "ttft": 1.088,
+        "e2e": 1.088,
+        "tps": 0.0,
+        "output_tokens": 120,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": "zero_tps: tps=0.0, tokens=120"
+      },
+      {
+        "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+        "scenario": "LISO",
+        "ttfb": 0.5766,
+        "ttft": 1.1019,
+        "e2e": 1.1019,
+        "tps": 0.0,
+        "output_tokens": 120,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": "zero_tps: tps=0.0, tokens=120"
+      },
+      {
+        "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+        "scenario": "LISO",
+        "ttfb": 0.5413,
+        "ttft": 1.0263,
+        "e2e": 1.0263,
+        "tps": 0.0,
+        "output_tokens": 120,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": "zero_tps: tps=0.0, tokens=120"
+      }
+    ],
+    "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning::BALANCED": [
+      {
+        "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+        "scenario": "BALANCED",
+        "ttfb": 0.6077,
+        "ttft": 1.0893,
+        "e2e": 2.0357,
+        "tps": 295.86,
+        "output_tokens": 280,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+        "scenario": "BALANCED",
+        "ttfb": 0.5195,
+        "ttft": 0.9258,
+        "e2e": 1.5981,
+        "tps": 416.44,
+        "output_tokens": 280,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+        "scenario": "BALANCED",
+        "ttfb": 0.727,
+        "ttft": 2.2665,
+        "e2e": 2.2665,
+        "tps": 0.0,
+        "output_tokens": 280,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": "zero_tps: tps=0.0, tokens=280"
+      },
+      {
+        "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+        "scenario": "BALANCED",
+        "ttfb": 0.5674,
+        "ttft": 0.9625,
+        "e2e": 1.9113,
+        "tps": 295.11,
+        "output_tokens": 280,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      }
+    ],
+    "qwen/qwen3-next-80b-a3b-instruct::SILO": [
+      {
+        "model": "qwen/qwen3-next-80b-a3b-instruct",
+        "scenario": "SILO",
+        "ttfb": 1.1717,
+        "ttft": 1.2262,
+        "e2e": 30.1177,
+        "tps": 29.25,
+        "output_tokens": 845,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "qwen/qwen3-next-80b-a3b-instruct",
+        "scenario": "SILO",
+        "ttfb": 0.6012,
+        "ttft": 0.7541,
+        "e2e": 27.684,
+        "tps": 30.19,
+        "output_tokens": 813,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "qwen/qwen3-next-80b-a3b-instruct",
+        "scenario": "SILO",
+        "ttfb": 3.1347,
+        "ttft": 9.5555,
+        "e2e": 37.0838,
+        "tps": 32.44,
+        "output_tokens": 893,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      }
+    ],
+    "qwen/qwen3-next-80b-a3b-instruct::LISO": [
+      {
+        "model": "qwen/qwen3-next-80b-a3b-instruct",
+        "scenario": "LISO",
+        "ttfb": 2.431,
+        "ttft": 2.6537,
+        "e2e": 6.5804,
+        "tps": 30.56,
+        "output_tokens": 120,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "qwen/qwen3-next-80b-a3b-instruct",
+        "scenario": "LISO",
+        "ttfb": 4.3349,
+        "ttft": 4.7279,
+        "e2e": 6.9803,
+        "tps": 53.28,
+        "output_tokens": 120,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "qwen/qwen3-next-80b-a3b-instruct",
+        "scenario": "LISO",
+        "ttfb": 2.3883,
+        "ttft": 2.7591,
+        "e2e": 6.0483,
+        "tps": 36.48,
+        "output_tokens": 120,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      }
+    ],
+    "qwen/qwen3-next-80b-a3b-instruct::BALANCED": [
+      {
+        "model": "qwen/qwen3-next-80b-a3b-instruct",
+        "scenario": "BALANCED",
+        "ttfb": 8.8112,
+        "ttft": 9.0316,
+        "e2e": 15.9348,
+        "tps": 37.08,
+        "output_tokens": 256,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "qwen/qwen3-next-80b-a3b-instruct",
+        "scenario": "BALANCED",
+        "ttfb": 6.3121,
+        "ttft": 8.0518,
+        "e2e": 21.7452,
+        "tps": 18.62,
+        "output_tokens": 255,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "qwen/qwen3-next-80b-a3b-instruct",
+        "scenario": "BALANCED",
+        "ttfb": 1.0502,
+        "ttft": 1.1032,
+        "e2e": 8.126,
+        "tps": 37.31,
+        "output_tokens": 262,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      }
+    ],
+    "qwen/qwen3.5-122b-a10b::SILO": [
+      {
+        "model": "qwen/qwen3.5-122b-a10b",
+        "scenario": "SILO",
+        "ttfb": 22.5751,
+        "ttft": 22.5752,
+        "e2e": 85.0984,
+        "tps": 14.39,
+        "output_tokens": 900,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "qwen/qwen3.5-122b-a10b",
+        "scenario": "SILO",
+        "ttfb": 4.1554,
+        "ttft": 4.1555,
+        "e2e": 112.7526,
+        "tps": 7.73,
+        "output_tokens": 839,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "qwen/qwen3.5-122b-a10b",
+        "scenario": "SILO",
+        "ttfb": 5.0025,
+        "ttft": 5.0026,
+        "e2e": 5.0026,
+        "tps": 0.0,
+        "output_tokens": 0,
+        "token_source": "tiktoken/cl100k_base",
+        "error": null,
+        "anomaly": "empty_output: tokens=0"
+      },
+      {
+        "model": "qwen/qwen3.5-122b-a10b",
+        "scenario": "SILO",
+        "ttfb": 13.8916,
+        "ttft": 13.8917,
+        "e2e": 45.6375,
+        "tps": 28.19,
+        "output_tokens": 895,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      }
+    ],
+    "qwen/qwen3.5-122b-a10b::LISO": [
+      {
+        "model": "qwen/qwen3.5-122b-a10b",
+        "scenario": "LISO",
+        "ttfb": 0.7818,
+        "ttft": 0.7819,
+        "e2e": 2.0758,
+        "tps": 92.74,
+        "output_tokens": 120,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "qwen/qwen3.5-122b-a10b",
+        "scenario": "LISO",
+        "ttfb": 10.7667,
+        "ttft": 10.7669,
+        "e2e": 116.7244,
+        "tps": 1.13,
+        "output_tokens": 120,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "qwen/qwen3.5-122b-a10b",
+        "scenario": "LISO",
+        "ttfb": 11.3985,
+        "ttft": 11.3986,
+        "e2e": 163.9194,
+        "tps": 0.79,
+        "output_tokens": 120,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      }
+    ],
+    "qwen/qwen3.5-122b-a10b::BALANCED": [
+      {
+        "model": "qwen/qwen3.5-122b-a10b",
+        "scenario": "BALANCED",
+        "ttfb": 12.2781,
+        "ttft": 12.2782,
+        "e2e": 17.0981,
+        "tps": 56.02,
+        "output_tokens": 270,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "qwen/qwen3.5-122b-a10b",
+        "scenario": "BALANCED",
+        "ttfb": 14.0378,
+        "ttft": 14.0379,
+        "e2e": 26.0539,
+        "tps": 21.55,
+        "output_tokens": 259,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      },
+      {
+        "model": "qwen/qwen3.5-122b-a10b",
+        "scenario": "BALANCED",
+        "ttfb": 5.4889,
+        "ttft": 5.489,
+        "e2e": 5.489,
+        "tps": 0.0,
+        "output_tokens": 0,
+        "token_source": "tiktoken/cl100k_base",
+        "error": null,
+        "anomaly": "empty_output: tokens=0"
+      },
+      {
+        "model": "qwen/qwen3.5-122b-a10b",
+        "scenario": "BALANCED",
+        "ttfb": 14.6622,
+        "ttft": 14.6623,
+        "e2e": 98.5264,
+        "tps": 3.16,
+        "output_tokens": 265,
+        "token_source": "api_usage",
+        "error": null,
+        "anomaly": null
+      }
+    ]
+  }
+}
